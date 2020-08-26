@@ -1,8 +1,10 @@
 import * as setup from "../../__tests__/setup";
-import { ReviewModel, MovieModel } from "../../models";
+import { MovieModel, Movie } from "../../models";
 import { addReview } from "../review";
+
 let testMongo: setup.TestMongoConn;
-let testMovie;
+let testMovie: Movie;
+
 beforeEach(async () => {
   testMongo = await setup.beforeEach();
 
