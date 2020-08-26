@@ -7,9 +7,11 @@ const typeDefs = gql`
     releaseDate: String!
     duration: Int!
     actors: [String!]!
-    averageRating: Float!
+    ratingsAverage: Float!
+    ratingsQuantity: Int!
     author: User
     reviews: [Review!]!
+    coverImage: String!
   }
 
   extend type Query {
