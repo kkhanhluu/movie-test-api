@@ -22,7 +22,7 @@ async function start() {
     console.log("Connected to DB.");
 
     await new ApolloServer({
-      typeDefs,
+      typeDefs: typeDefs as string[],
       resolvers,
       context: ({ req }) => ({
         userInfo: getUserInfo(req.headers.authorization || ""),
