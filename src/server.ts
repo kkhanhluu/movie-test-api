@@ -7,7 +7,8 @@ import resolvers from "./resolvers";
 
 const args = yargs.option("mongo-uri", {
   describe: "Mongo URI",
-  default: "mongodb://localhost:27017/movies",
+  default:
+    "mongodb+srv://admin:Abc@12345@cluster0.ix1xr.mongodb.net/graphql-ninja?retryWrites=true&w=majority",
   type: "string",
   group: "Mongo",
 }).argv;
