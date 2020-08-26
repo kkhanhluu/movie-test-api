@@ -62,6 +62,14 @@ export async function currentUser(
   };
 }
 
-export function checkUserIsAuthenticated(ctx: Context): boolean {
+export function checkUserIsAuthenticated(ctx: Context | null): boolean {
+  if (
+    ctx === null ||
+    ctx.userInfo === null ||
+    ctx.userInfo.id === null ||
+    ctx.userInfo.username === null
+  ) {
+    throw new Error("Not authenticated");
+  }
   return true;
 }

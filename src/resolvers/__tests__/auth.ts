@@ -107,7 +107,7 @@ describe("Test checkUserIsAuthenticated function", () => {
   it("should return user is not authenticated", () => {
     let error, authenticated;
     try {
-      authenticated = checkUserIsAuthenticated(undefined);
+      authenticated = checkUserIsAuthenticated(null);
     } catch (e) {
       error = e;
     }
