@@ -1,5 +1,5 @@
-import { MovieModel } from "../models/movie";
-import { MovieResponse } from "src/types";
+import { MovieModel, Movie } from "../models/movie";
+import { MovieResponse, Context } from "src/types";
 
 export async function movies(_: void): Promise<MovieResponse[]> {
   return await MovieModel.find();
@@ -11,6 +11,11 @@ export async function movie(_: void, args: any): Promise<MovieResponse> {
   if (movie === null) {
     throw new Error("Cannot find the movie");
   }
-
   return movie;
 }
+
+export async function createMovie(
+  _: void,
+  args: any,
+  ctx: Context,
+): Promise<Movie> {}

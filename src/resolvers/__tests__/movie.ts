@@ -1,6 +1,6 @@
 import * as setup from "../../__tests__/setup";
 import { MovieModel } from "../../models";
-import { movies, movie } from "../movie";
+import { movies, movie, createMovie } from "../movie";
 let testMongo: setup.TestMongoConn;
 
 beforeEach(async () => {
@@ -71,5 +71,54 @@ describe("Test get one movie", () => {
     }
     expect(response).toBeUndefined();
     expect(error).toEqual(new Error("Cannot find the movie"));
+  });
+});
+
+describe("Test create movie", () => {
+  it("should create a movie", async () => {
+    const movie = await createMovie(
+      undefined,
+      {
+        name: "Test Movie",
+        duration: 90,
+        releaseDate: "1598438370837",
+        actors: [],
+        coverImage:
+          "https://image.tmdb.org/t/p/w500/e7ZsW5EbLbQwoGx0548KCmCAXA9.jpg",
+        author: "5f4594c7fd480639e8d889e9",
+      },
+      {
+        userInfo: {
+          id: "5f4594c7fd480639e8d889e9",
+          username: "Test User",
+        },
+      },
+    );
+
+    expect(movie).toBeDefined();
+    expect(movie.name).toEqual("Test Movie");
+  });
+
+  it("should not create a movie", async () => {
+    let error;
+    try {
+      await createMovie(
+        undefined,
+        {
+          name: "Test Movie",
+          duration: 90,
+          releaseDate: "1598438370837",
+          actors: [],
+          coverImage:
+            "https://image.tmdb.org/t/p/w500/e7ZsW5EbLbQwoGx0548KCmCAXA9.jpg",
+          author: "5f4594c7fd480639e8d889e9",
+        },
+        {},
+      );
+    } catch (e) {
+      error = e;
+    }
+
+    expect(error).toEqual(new Error("Not authenticated"));
   });
 });
