@@ -36,3 +36,42 @@ export async function createMovie(
 
   return movie;
 }
+
+export async function editMovie(
+  _: void,
+  args: any,
+  ctx: Context | null,
+): Promise<Movie> {
+  checkUserIsAuthenticated(ctx);
+
+  const { id } = args;
+
+  const movie: Movie | null = await MovieModel.findByIdAndUpdate(id, args, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (movie === null) {
+    throw new Error("No movie found with that ID");
+  }
+
+  return movie;
+}
+
+export async function deleteMovie(
+  _: void,
+  args: any,
+  ctx: Context | null,
+): Promise<Boolean> {
+  checkUserIsAuthenticated(ctx);
+
+  const { id } = args;
+
+  const movie = await MovieModel.findByIdAndDelete(id);
+
+  if (movie === null) {
+    throw new Error("No movie found with that ID");
+  }
+
+  return true;
+}

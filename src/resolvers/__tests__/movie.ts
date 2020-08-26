@@ -1,6 +1,6 @@
 import * as setup from "../../__tests__/setup";
 import { MovieModel } from "../../models";
-import { movies, movie, createMovie } from "../movie";
+import { movies, movie, createMovie, editMovie, deleteMovie } from "../movie";
 let testMongo: setup.TestMongoConn;
 
 beforeEach(async () => {
@@ -115,6 +115,177 @@ describe("Test create movie", () => {
         },
         null,
       );
+    } catch (e) {
+      error = e;
+    }
+
+    expect(error).toEqual(new Error("Not authenticated"));
+  });
+});
+
+describe("Test edit movie", () => {
+  it("should edit a movie", async () => {
+    const testMovie = new MovieModel({
+      name: "Test Movie",
+      duration: 90,
+      releaseDate: "1598438370837",
+      actors: [],
+      coverImage:
+        "https://image.tmdb.org/t/p/w500/e7ZsW5EbLbQwoGx0548KCmCAXA9.jpg",
+      author: "5f4594c7fd480639e8d889e9",
+    });
+
+    await testMovie.save();
+
+    const editedMovie = await editMovie(
+      undefined,
+      { id: testMovie.id, name: "Test Movie edited" },
+      {
+        userInfo: {
+          id: "5f4594c7fd480639e8d889e9",
+          username: "Test User",
+        },
+      },
+    );
+
+    expect(editedMovie).toBeDefined();
+    expect(editedMovie.name).toEqual("Test Movie edited");
+  });
+
+  it("should not find a movie with that id", async () => {
+    let error;
+    try {
+      const testMovie = new MovieModel({
+        name: "Test Movie",
+        duration: 90,
+        releaseDate: "1598438370837",
+        actors: [],
+        coverImage:
+          "https://image.tmdb.org/t/p/w500/e7ZsW5EbLbQwoGx0548KCmCAXA9.jpg",
+        author: "5f4594c7fd480639e8d889e9",
+      });
+
+      await testMovie.save();
+
+      await editMovie(
+        undefined,
+        { id: "5f4594c7fd480639e8d889e9", name: "Test Movie edited" },
+        {
+          userInfo: {
+            id: "5f4594c7fd480639e8d889e9",
+            username: "Test User",
+          },
+        },
+      );
+    } catch (e) {
+      error = e;
+    }
+    expect(error).toEqual(new Error("No movie found with that ID"));
+  });
+
+  it("should not edit a movie", async () => {
+    let error;
+    try {
+      const testMovie = new MovieModel({
+        name: "Test Movie",
+        duration: 90,
+        releaseDate: "1598438370837",
+        actors: [],
+        coverImage:
+          "https://image.tmdb.org/t/p/w500/e7ZsW5EbLbQwoGx0548KCmCAXA9.jpg",
+        author: "5f4594c7fd480639e8d889e9",
+      });
+
+      await testMovie.save();
+
+      await editMovie(
+        undefined,
+        { id: testMovie.id, name: "Test Movie edited" },
+        null,
+      );
+    } catch (e) {
+      error = e;
+    }
+
+    expect(error).toEqual(new Error("Not authenticated"));
+  });
+});
+
+describe("Test delete movie", () => {
+  it("should delete a movie", async () => {
+    const testMovie = new MovieModel({
+      name: "Test Movie",
+      duration: 90,
+      releaseDate: "1598438370837",
+      actors: [],
+      coverImage:
+        "https://image.tmdb.org/t/p/w500/e7ZsW5EbLbQwoGx0548KCmCAXA9.jpg",
+      author: "5f4594c7fd480639e8d889e9",
+    });
+
+    await testMovie.save();
+
+    const deleted = await deleteMovie(
+      undefined,
+      { id: testMovie.id },
+      {
+        userInfo: {
+          id: "5f4594c7fd480639e8d889e9",
+          username: "Test User",
+        },
+      },
+    );
+
+    expect(deleted).toEqual(true);
+  });
+
+  it("should not find a movie with that id", async () => {
+    let error;
+    try {
+      const testMovie = new MovieModel({
+        name: "Test Movie",
+        duration: 90,
+        releaseDate: "1598438370837",
+        actors: [],
+        coverImage:
+          "https://image.tmdb.org/t/p/w500/e7ZsW5EbLbQwoGx0548KCmCAXA9.jpg",
+        author: "5f4594c7fd480639e8d889e9",
+      });
+
+      await testMovie.save();
+
+      await deleteMovie(
+        undefined,
+        { id: "5f4594c7fd480639e8d889e9" },
+        {
+          userInfo: {
+            id: "5f4594c7fd480639e8d889e9",
+            username: "Test User",
+          },
+        },
+      );
+    } catch (e) {
+      error = e;
+    }
+    expect(error).toEqual(new Error("No movie found with that ID"));
+  });
+
+  it("should not delete a movie", async () => {
+    let error;
+    try {
+      const testMovie = new MovieModel({
+        name: "Test Movie",
+        duration: 90,
+        releaseDate: "1598438370837",
+        actors: [],
+        coverImage:
+          "https://image.tmdb.org/t/p/w500/e7ZsW5EbLbQwoGx0548KCmCAXA9.jpg",
+        author: "5f4594c7fd480639e8d889e9",
+      });
+
+      await testMovie.save();
+
+      await deleteMovie(undefined, { id: testMovie.id }, null);
     } catch (e) {
       error = e;
     }
