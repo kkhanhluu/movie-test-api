@@ -61,3 +61,7 @@ export async function currentUser(
     username: user.username,
   };
 }
+
+export function checkUserIsAuthenticated(ctx: Context): boolean {
+  return true;
+}

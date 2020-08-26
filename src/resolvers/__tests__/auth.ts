@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import * as setup from "../../__tests__/setup";
 import { UserModel } from "../../models";
 import { UserInfo } from "../../types";
-import { register, login } from "../auth";
+import { register, login, checkUserIsAuthenticated } from "../auth";
 
 let testMongo: setup.TestMongoConn;
 
@@ -91,5 +91,27 @@ describe("Test login", () => {
     });
     const tokenPayload: UserInfo = jwt.decode(response.token) as UserInfo;
     expect(tokenPayload.username).toEqual("johndoe");
+  });
+});
+
+describe("Test checkUserIsAuthenticated function", () => {
+  it("should return user is authenticated", () => {
+    const authenticated = checkUserIsAuthenticated({
+      userInfo: {
+        id: "5f4594c7fd480639e8d889e9",
+        username: "Test User",
+      },
+    });
+    expect(authenticated).toBe(true);
+  });
+  it("should return user is not authenticated", () => {
+    let error, authenticated;
+    try {
+      authenticated = checkUserIsAuthenticated(undefined);
+    } catch (e) {
+      error = e;
+    }
+    expect(authenticated).toBeUndefined();
+    expect(error).toEqual(new Error("Not authenticated"));
   });
 });
