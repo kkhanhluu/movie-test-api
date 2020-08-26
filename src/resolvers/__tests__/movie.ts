@@ -113,7 +113,7 @@ describe("Test create movie", () => {
             "https://image.tmdb.org/t/p/w500/e7ZsW5EbLbQwoGx0548KCmCAXA9.jpg",
           author: "5f4594c7fd480639e8d889e9",
         },
-        {},
+        null,
       );
     } catch (e) {
       error = e;
