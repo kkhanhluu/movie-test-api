@@ -65,4 +65,58 @@ describe("Test create review", () => {
 
     expect(error).toEqual(new Error("Not authenticated"));
   });
+
+  it("should update ratingsQuantity and ratingsAverage of the movie", async () => {
+    const reviewDoc = await addReview(
+      undefined,
+      {
+        rating: 3,
+        review: "Very good",
+        user: "5f4594c7fd480639e8d889e9",
+        movie: testMovie.id,
+      },
+      {
+        userInfo: {
+          id: "5f4594c7fd480639e8d889e9",
+          username: "Test User",
+        },
+      },
+    );
+
+    const movie = await MovieModel.findById(testMovie.id);
+
+    expect(movie.ratingsAverage).toEqual(3);
+    expect(movie.ratingsQuantity).toEqual(1);
+  });
+
+  it("should not allow one user to review one movie more than 1 time", async () => {
+    let error;
+    try {
+      await addReview(
+        undefined,
+        {
+          rating: 3,
+          review: "Very good",
+          user: "5f4594c7fd480639e8d889e9",
+          movie: testMovie.id,
+        },
+        null,
+      );
+
+      await addReview(
+        undefined,
+        {
+          rating: 5,
+          review: "Amazing",
+          user: "5f4594c7fd480639e8d889e9",
+          movie: testMovie.id,
+        },
+        null,
+      );
+    } catch (e) {
+      error = e;
+    }
+
+    expect(error).toEqual(new Error("Not authenticated"));
+  });
 });
