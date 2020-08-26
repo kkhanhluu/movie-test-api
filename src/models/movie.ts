@@ -55,4 +55,18 @@ const MovieSchema = new mongoose.Schema(
   },
 );
 
+MovieSchema.virtual("reviews", {
+  ref: "Review",
+  foreignField: "movie",
+  localField: "_id",
+});
+
+MovieSchema.pre(/^find/, function (next) {
+  (this as any).populate({
+    path: "author",
+    select: "username",
+  });
+  next();
+});
+
 export const MovieModel = mongoose.model<Movie>("Movie", MovieSchema, "Movies");

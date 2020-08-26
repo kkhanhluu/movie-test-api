@@ -31,6 +31,16 @@ const ReviewSchema = new mongoose.Schema({
   },
 });
 
+ReviewSchema.index({ user: 1, movie: 1 }, { unique: true });
+
+ReviewSchema.pre(/^find/, function (next) {
+  (this as any).populate({
+    path: "user",
+    select: "username",
+  });
+  next();
+});
+
 export const ReviewModel = mongoose.model<Review>(
   "Review",
   ReviewSchema,
