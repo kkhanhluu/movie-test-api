@@ -11,6 +11,7 @@ async function getMongoConnection(): Promise<TestMongoConn> {
   await mongoose.connect(url, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
+    useFindAndModify: true,
   });
   return {
     db: mongoose.connection,

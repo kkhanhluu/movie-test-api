@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { MovieModel } from "./movie";
 
 export interface Review extends mongoose.Document {
   _id: string;
@@ -39,6 +40,37 @@ ReviewSchema.pre(/^find/, function (next) {
     select: "username",
   });
   next();
+});
+
+ReviewSchema.statics.updateRatingForMovie = async function (movieId: string) {
+  const stats = await (this as any).aggregate([
+    { $match: { movie: movieId } },
+    {
+      $group: {
+        _id: "$movie",
+        numberOfRating: { $sum: 1 },
+        avgRating: { $avg: "$rating" },
+      },
+    },
+  ]);
+
+  if (stats.length > 0) {
+    const doc = await MovieModel.findByIdAndUpdate(movieId, {
+      ratingsQuantity: stats[0].numberOfRating,
+      ratingsAverage: stats[0].avgRating,
+    });
+
+    console.log(doc);
+  } else {
+    await MovieModel.findByIdAndUpdate(movieId, {
+      ratingsQuantity: 0,
+      ratingsAverage: 0,
+    });
+  }
+};
+
+ReviewSchema.post("save", function (doc: Review) {
+  (doc.constructor as any).updateRatingForMovie(doc.movie);
 });
 
 export const ReviewModel = mongoose.model<Review>(

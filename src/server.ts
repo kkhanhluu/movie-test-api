@@ -18,6 +18,7 @@ async function start() {
     await mongoose.connect(args["mongo-uri"], {
       useUnifiedTopology: true,
       useNewUrlParser: true,
+      useFindAndModify: true,
     });
     console.log("Connected to DB.");
 
