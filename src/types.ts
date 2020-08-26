@@ -22,3 +22,11 @@ export interface MovieResponse {
   ratingsAverage: number;
   ratingsQuantity: number;
 }
+
+export interface ReviewResponse {
+  _id: string;
+  rating: number;
+  review: string;
+  user: string;
+  movie: string;
+}

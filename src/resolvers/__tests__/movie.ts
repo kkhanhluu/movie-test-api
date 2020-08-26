@@ -44,7 +44,7 @@ describe("Test get movies", () => {
 describe("Test get one movie", () => {
   it("should return one movie and movie should populate reviews", async () => {
     const testMovie = new MovieModel({
-      name: "Test Movie ",
+      name: "Test Movie",
       duration: 90,
       releaseDate: "1598438370837",
       actors: [],
@@ -55,17 +55,17 @@ describe("Test get one movie", () => {
 
     await testMovie.save();
 
-    const response = movie(undefined, { id: testMovie.id });
-    expect(response).toBeDefined();
+    const response = await movie(undefined, { id: testMovie.id });
+
     expect(response.name).toEqual("Test Movie");
     expect(response.duration).toEqual(90);
-    expect(response.reviews).toBeDefined();
+    expect((response as any).reviews).toBeDefined();
   });
 
   it("should throw error if the movie does not exist", async () => {
     let error, response;
     try {
-      response = movie(undefined, { id: "5f462df07ecef6b11c50fe5b" });
+      response = await movie(undefined, { id: "5f462df07ecef6b11c50fe5b" });
     } catch (e) {
       error = e;
     }
