@@ -13,7 +13,7 @@ describe("Test get movies", () => {
   it("should return all movies in database", async () => {
     const testMovie1 = new MovieModel({
       name: "Test Movie 1",
-      durationSeconds: 90,
+      duration: 90,
       releaseDate: "1598438370837",
       actors: [],
       coverImage:
@@ -23,7 +23,7 @@ describe("Test get movies", () => {
 
     const testMovie2 = new MovieModel({
       name: "Test Movie 2",
-      durationSeconds: 90,
+      duration: 90,
       releaseDate: "1598438370837",
       actors: [],
       coverImage:
@@ -32,6 +32,7 @@ describe("Test get movies", () => {
     });
 
     await testMovie1.save();
+    await testMovie2.save();
 
     const response = await movies(undefined);
     expect(response.length).toEqual(2);
