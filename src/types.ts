@@ -12,3 +12,13 @@ export interface UserInfo {
 export interface Context {
   userInfo: UserInfo;
 }
+
+export interface MovieResponse {
+  _id: string;
+  name: string;
+  releaseDate: Date;
+  duration: number;
+  actors: string[];
+  ratingsAverage: number;
+  ratingsQuantity: number;
+}
