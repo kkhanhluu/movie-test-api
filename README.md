@@ -23,3 +23,13 @@ docker-compose up
 ```
 
 Test running server by accessing `http://localhost:3000/`
+
+## Test
+
+To run the tests run
+
+```
+npm run test
+```
+
+Test running server by accessing `http://localhost:3000/`

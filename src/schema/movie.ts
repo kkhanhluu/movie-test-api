@@ -17,6 +17,7 @@ const typeDefs = gql`
   extend type Query {
     movies: [Movie!]!
     movie(id: String!): Movie!
+    moviesByUser(userId: String!): [Movie]!
   }
 
   extend type Mutation {
@@ -28,10 +29,10 @@ const typeDefs = gql`
       coverImage: String!
     ): Movie!
 
-    deleteMovie(id: ID!): Boolean!
+    deleteMovie(id: String!): Boolean!
 
     editMovie(
-      id: ID!
+      id: String!
       name: String!
       releaseDate: String!
       duration: Int!

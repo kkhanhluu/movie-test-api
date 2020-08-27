@@ -75,3 +75,8 @@ export async function deleteMovie(
 
   return true;
 }
+
+export async function moviesByUser(_: void, args: any) {
+  const { userId } = args;
+  return await MovieModel.find((movie) => movie && movie.author === userId);
+}
