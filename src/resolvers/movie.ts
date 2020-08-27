@@ -2,8 +2,12 @@ import { MovieModel, Movie } from "../models/movie";
 import { MovieResponse, Context } from "src/types";
 import { checkUserIsAuthenticated } from "./auth";
 
-export async function movies(_: void): Promise<MovieResponse[]> {
-  return await MovieModel.find();
+export async function movies(_: void, args: any): Promise<MovieResponse[]> {
+  let sortBy = "";
+  if (args.sortBy) {
+    sortBy = args.sortBy.split(",").join(" ");
+  }
+  return await MovieModel.find().sort(sortBy);
 }
 
 export async function movie(_: void, args: any): Promise<MovieResponse> {

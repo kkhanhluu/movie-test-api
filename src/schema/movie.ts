@@ -15,7 +15,7 @@ const typeDefs = gql`
   }
 
   extend type Query {
-    movies: [Movie!]!
+    movies(sortBy: String): [Movie!]!
     movie(id: String!): Movie!
     moviesByUser(userId: String!): [Movie]!
   }
